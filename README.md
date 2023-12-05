@@ -8,9 +8,9 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 
-# Project Name
+# City Explorer
 
-**Author**: Your Name Goes Here
+**Author**: Dominique McClaney
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
@@ -33,12 +33,14 @@ Currently, two official plugins are available:
 
 
 
-Name of feature: ________________________________
+Name of feature: City Explorer
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 6 hrs
 
-Start time: _____
+Start time: 3pm
 
-Finish time: _____
+Finish time: 9pm
 
-Actual time needed to complete: _____
+Actual time needed to complete: 6hrs
+
+![lighthouse report lab 6](lighthouse06.png)

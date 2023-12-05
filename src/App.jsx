@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Alert } from 'bootstrap';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const KEY = import.meta.env.VITE_API_KEY;
+
+export default function App() {
+  const [destination, setDestination] = useState({ display_name: 'location info' });
+  const [search, setSearch] = useState('');
+  const [error, setError] = useState(null);
+
+  async function getDestination() {
+    try {
+      const API = `https://us1.locationiq.com/v1/search.php?key=${KEY}&q=${search}&format=json`;
+
+      const response = await axios.get(API);
+      const data = response.data[0];
+
+      setDestination(data);
+      setError(null);
+    } catch (error) {
+      setError('Error took place when fetching API');
+    }
+  }
+
+  function onSearchChange(event) {
+    setSearch(event.target.value);
+  }
+
+  function searchDestination(event) {
+    event.preventDefault();
+    getDestination();
+    setSearch(search);
+  }
+
+  function generateMap(lat, lon) {
+    const API2 = `https://maps.locationiq.com/v3/staticmap?key=${KEY}&center=${lat},${lon}&zoom=10`;
+    return API2;
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <input onChange={onSearchChange} />
+      <button onClick={searchDestination}>Search</button>
+      <h2>The city is:{destination.display_name}</h2>
+      <h2>Latitude:{destination.lat}</h2> <h2>Longitude:{destination.lon}</h2>
+      {error && (
+        <Alert variant="danger" onClose={() => setError(null)} dismissible>
+          {error}
+        </Alert>
+      )}
+      {destination.lat && destination.lon && (
+        <img
+          src={generateMap(destination.lat, destination.lon)}
+          alt="map"
+          style={{ maxWidth: '80%' }}
+        />
+      )}
     </>
-  )
+  );
 }
-
-export default App
